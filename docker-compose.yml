@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  tnt-rewrite:
+    image: "node:18"
+    working_dir: /workspace/node/tnt-rewrite
+    env_file:
+      - .env 
+    volumes:
+      - ./:/workspace/node/tnt-rewrite
+    command: "npm run docker-run"

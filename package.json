@@ -6,7 +6,8 @@
   "author": "GuikiPT <foxzillapt17@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node start.js"
+    "start": "node start.js",
+    "docker-run": "npm install && npm run start"
   },
   "dependencies": {
     "colors": "^1.4.0",
