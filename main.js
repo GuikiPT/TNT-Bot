@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const colors = require('colors/safe');
 require('dotenv').config({});
 
 const client = new Discord.Client({
@@ -32,4 +33,17 @@ const client = new Discord.Client({
     ],
 });
 
-client.login(process.env.DiscordToken);
+(async function() {
+    try {
+        const DiscordToken = process.env.DiscordToken;
+
+        if (!DiscordToken) {
+            console.error(colors.red('Discord Token is not defined or passed correctly!\nPlease check your .env file and try again.\n'));
+            process.exit(1);
+        } else {
+            await client.login(DiscordToken);
+        }
+    } catch (err) {
+        console.error(err.stack || err);
+    }
+})();
