@@ -1,0 +1,11 @@
+{
+  "name": "tnt-rewrite",
+  "version": "1.0.0b",
+  "main": "main.js",
+  "repository": "https://github.com/GuikiPT/TNT-Rewrite.git",
+  "author": "GuikiPT <foxzillapt17@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node main.js"
+  }
+}
