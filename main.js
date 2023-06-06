@@ -33,7 +33,20 @@ const client = new Discord.Client({
     ],
 });
 
-(async function() {
+(async function () {
+    try {
+        const handlers = ['events'];
+
+        for (const handler of handlers) {
+            await require(`./handlers/${handler}`)(client);
+        }
+    }
+    catch (err) {
+        console.error(colors.red(err.stack || err));
+    }
+})();
+
+(async function () {
     try {
         const DiscordToken = process.env.DiscordToken;
 
@@ -44,6 +57,6 @@ const client = new Discord.Client({
             await client.login(DiscordToken);
         }
     } catch (err) {
-        console.error(err.stack || err);
+        console.error(colors.red(err.stack || err));
     }
 })();
