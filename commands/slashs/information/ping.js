@@ -11,7 +11,7 @@ module.exports = {
 				const ping = reply.createdTimestamp - interaction.createdTimestamp;
 				const pingEmbed = new Discord.EmbedBuilder()
 					.setColor('Green')
-					.setTitle('🏓 | Pong!')
+					.setTitle('🧨 | Pong!')
 					.setThumbnail(interaction.client.user.displayAvatarURL({ dynamic: false, size: 1024, format: 'png' }))
 					.addFields(
 						{ name: '**Bot Latency**', value: '```ini\n [ ' + ping + 'ms ]\n```', inline: false },
