@@ -4,8 +4,8 @@ const colors = require('colors/safe');
 module.exports = {
 	name: Discord.Events.ClientReady,
 	once: true,
-	async execute(client) {
-        console.info(`Logged in as ${client.user.tag}!`);
+	async execute(client, spinnies) {
+        spinnies.succeed('startingBot', { text: colors.green(`Logged in as ${client.user.tag}!`) });
 
         try {
             await client.user.setPresence({
