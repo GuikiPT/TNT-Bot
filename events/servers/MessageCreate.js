@@ -7,10 +7,7 @@ module.exports = {
     async execute(message) {
         try {
             if (message.author.bot) return;
-
-            // TODO: Check if the guild is the guild configured with Counter
-            // Need to make new Enviroment Variable CounterGuildId for this check
-
+            
             const CounterChannelId = process.env.CounterChannelId;
             const CounterAlternativeChannelId = process.env.CounterAlternativeChannelId;
             const CounterLogChannelId = process.env.CounterLogChannelId;
