@@ -33,10 +33,12 @@ module.exports = async function (spinnies) {
             Discord.Partials.User,
         ],
     });
+    client.slashsCmds = new Discord.Collection();
+
 
     (async function () {
         try {
-            const handlers = ['events'];
+            const handlers = ['events', 'slashs'];
 
             for (const handler of handlers) {
                 await require(`./handlers/${handler}`)(client, spinnies);

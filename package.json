@@ -7,7 +7,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node start.js",
-    "docker-run": "npm install && npm run start"
+    "deploy-slash": "node deploy-commands.js",
+    "docker-run": "npm install && npm run start",
+    "docker-start": "docker-compose up -d",
+    "docker-deploy-slash": "npm install && npm run deploy-slash"
   },
   "dependencies": {
     "cli-spinners": "^2.9.0",
