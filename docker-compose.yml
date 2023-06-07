@@ -3,6 +3,7 @@ services:
   tnt-rewrite:
     image: "node:18"
     working_dir: /workspace/node/tnt-rewrite
+    restart: always
     env_file:
       - .env 
     volumes:
