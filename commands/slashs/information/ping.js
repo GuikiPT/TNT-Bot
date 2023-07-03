@@ -4,7 +4,7 @@ const colors = require('colors/safe');
 module.exports = {
 	data: new Discord.SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Replies with Pong!'),
+		.setDescription('Mostra o ping/latência atual do bot.'),
 	async execute(interaction) {
 		try {
 			await interaction.reply({ content: '<a:DiscordLoading:1035119091662454836>', fetchReply: true }).then(async (reply) => {
