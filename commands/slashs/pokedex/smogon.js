@@ -56,24 +56,24 @@ module.exports = {
                 const moveset = dataMovesets[i];
 
                 const pokemonEmbed = new Discord.EmbedBuilder()
-                .setColor(pokeColor ?? 'White')
-                .setTitle(dataMovesets[i].species + ' #' + pokemonData.id)
-                .setThumbnail(pokemonData.spriteUrl)
-                .addFields(
-                    { name: '**Nome do Moveset**', value: '```' + (dataMovesets[i].name ? dataMovesets[i].name : 'Sem Informação') + '```' },
-                    { name: '**Species**', value: '```' + (dataMovesets[i].species ? dataMovesets[i].species : 'Sem Informação') + '```', inline: true },
-                    { name: '**Level**', value: '```' + (dataMovesets[i].level ? dataMovesets[i].level : 'Sem Informação') + '```', inline: true },
-                    { name: '**Item**', value: '```' + (dataMovesets[i].item ? dataMovesets[i].item : 'Sem Informação') + '```', inline: false },
-                    { name: '**Ability**', value: '```' + (dataMovesets[i].ability ? dataMovesets[i].ability : 'Sem Informação') + '```', inline: true },
-                    { name: '**Natures**', value: '```' + (dataMovesets[i].nature ? dataMovesets[i].nature : 'Sem Informação') + '```', inline: true },
-                    { name: '**Ivs**', value: '```' + (dataMovesets[i].ivs && Object.keys(dataMovesets[i].ivs).length > i ? formatJsonToText(dataMovesets[i].ivs) : 'Sem Informação') + '```', inline: false },
-                    { name: '**Evs**', value: '```' + (dataMovesets[i].evs && Object.keys(dataMovesets[i].evs).length > i ? formatJsonToText(dataMovesets[i].evs) : 'Sem Informação') + '```', inline: false },
-                    { name: '**Moves**', value: '```' + (dataMovesets[i].moves && Object.keys(dataMovesets[i].moves).length > i ? formatJsonToText(dataMovesets[i].moves) : 'Sem Informação') + '```', inline: false },
-                    { name: '**GigantaMax**', value: '```' + (dataMovesets[i].gigantaMax ? '✅' : '❌') + '```', inline: false },
-                    { name: '**TeraType**', value: '```' + (dataMovesets[i].teraType ? dataMovesets[i].teraType : 'Sem Informação') + '```', inline: false }
-                )
-                .setTimestamp()
-                .setFooter({ text: `Page ${i} of ${dataMovesets.length.toString()}` });
+                    .setColor(pokeColor ?? 'White')
+                    .setTitle(dataMovesets[i].species + ' #' + pokemonData.id)
+                    .setThumbnail(pokemonData.spriteUrl)
+                    .addFields(
+                        { name: '**Nome do Moveset**', value: '```' + (dataMovesets[i].name ? dataMovesets[i].name : 'Sem Informação') + '```' },
+                        { name: '**Species**', value: '```' + (dataMovesets[i].species ? dataMovesets[i].species : 'Sem Informação') + '```', inline: true },
+                        { name: '**Level**', value: '```' + (dataMovesets[i].level ? dataMovesets[i].level : 'Sem Informação') + '```', inline: true },
+                        { name: '**Item**', value: '```' + (dataMovesets[i].item ? dataMovesets[i].item : 'Sem Informação') + '```', inline: false },
+                        { name: '**Ability**', value: '```' + (dataMovesets[i].ability ? dataMovesets[i].ability : 'Sem Informação') + '```', inline: true },
+                        { name: '**Natures**', value: '```' + (dataMovesets[i].nature ? dataMovesets[i].nature : 'Sem Informação') + '```', inline: true },
+                        { name: '**Ivs**', value: '```' + (dataMovesets[i].ivs && Object.keys(dataMovesets[i].ivs).length > i ? formatJsonToText(dataMovesets[i].ivs) : 'Sem Informação') + '```', inline: false },
+                        { name: '**Evs**', value: '```' + (dataMovesets[i].evs && Object.keys(dataMovesets[i].evs).length > i ? formatJsonToText(dataMovesets[i].evs) : 'Sem Informação') + '```', inline: false },
+                        { name: '**Moves**', value: '```' + (dataMovesets[i].moves && Object.keys(dataMovesets[i].moves).length > i ? formatJsonToText(dataMovesets[i].moves) : 'Sem Informação') + '```', inline: false },
+                        { name: '**GigantaMax**', value: '```' + (dataMovesets[i].gigantaMax ? '✅' : '❌') + '```', inline: false },
+                        { name: '**TeraType**', value: '```' + (dataMovesets[i].teraType ? dataMovesets[i].teraType : 'Sem Informação') + '```', inline: false }
+                    )
+                    .setTimestamp()
+                    .setFooter({ text: `Page ${i} of ${dataMovesets.length.toString()}` });
 
                 embeds.push(pokemonEmbed);
             }
@@ -129,11 +129,16 @@ module.exports = {
         }
     },
 };
+
 function formatJsonToText(input) {
     let text = '';
 
     for (const key in input) {
-        text += `${key.toUpperCase()}: ${input[key]}\n`;
+        let formattedKey = key;
+        if (!isNaN(key)) {
+            formattedKey = (+key + 1).toString();
+        }
+        text += `${formattedKey.toUpperCase()} - ${input[key]}\n`;
     }
 
     return text;
