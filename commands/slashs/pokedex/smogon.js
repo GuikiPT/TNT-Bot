@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 const colors = require('colors/safe');
-const fetch = require('node-fetch');
 const axios = require('axios');
 var toHex = require('colornames')
+const { pagination, ButtonTypes, ButtonStyles } = require('@devraelfreeze/discordjs-pagination');
 
 const { Dex } = require('@pkmn/dex');
 const { Generations } = require('@pkmn/data');
@@ -42,40 +42,86 @@ module.exports = {
                 return interaction.reply({ content: 'O Pokémon especificado não existe.', ephemeral: true });
             }
 
-            // const pokemonExistsGeneration = await checkPokemonExistsInGeneration(pokemonNameInput, generationInput);
-            // if (!pokemonExistsGeneration) {
-            //     return interaction.reply({ content: 'Esse Pokémon não existe nessa geração `' + generationInput + '`.', ephemeral: true });
-            // }
-
-
             const dataMovesets = await smogon.sets(gens.get(generationInput), pokemonNameInput.toLowerCase());
-            if(!dataMovesets || dataMovesets.length === 0) {
+            if (!dataMovesets || dataMovesets.length === 0) {
                 return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
             }
 
             const speciesResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonNameInput.toLowerCase()}`);
             const pokeColor = await toHex(speciesResponse.data.color.name);
 
+            const embeds = [];
 
-            const pokemonEmbedToCollect = new Discord.EmbedBuilder()
+            for (let i = 0; i < dataMovesets.length; i++) {
+                const moveset = dataMovesets[i];
+
+                const pokemonEmbed = new Discord.EmbedBuilder()
                 .setColor(pokeColor ?? 'White')
-                .setTitle(dataMovesets[0].species + ' #' + pokemonData.id)
+                .setTitle(dataMovesets[i].species + ' #' + pokemonData.id)
                 .setThumbnail(pokemonData.spriteUrl)
                 .addFields(
-                    { name: '**Nome do Moveset**', value: '```' + (dataMovesets[0].name ? dataMovesets[0].name : 'Sem Informação') + '```' },
-                    { name: '**Species**', value: '```' + (dataMovesets[0].species ? dataMovesets[0].species : 'Sem Informação') + '```', inline: true },
-                    { name: '**Level**', value: '```' + (dataMovesets[0].level ? dataMovesets[0].level : 'Sem Informação') + '```', inline: true },
-                    { name: '**Item**', value: '```' + (dataMovesets[0].item ? dataMovesets[0].item : 'Sem Informação') + '```', inline: false },
-                    { name: '**Ability**', value: '```' + (dataMovesets[0].ability ? dataMovesets[0].ability : 'Sem Informação') + '```', inline: true },
-                    { name: '**Natures**', value: '```' + (dataMovesets[0].nature ? dataMovesets[0].nature : 'Sem Informação') + '```', inline: true },
-                    { name: '**Ivs**', value: '```' + (dataMovesets[0].ivs && Object.keys(dataMovesets[0].ivs).length > 0 ? formatJsonToText(dataMovesets[0].ivs) : 'Sem Informação') + '```', inline: false },
-                    { name: '**Evs**', value: '```' + (dataMovesets[0].evs && Object.keys(dataMovesets[0].evs).length > 0 ? formatJsonToText(dataMovesets[0].evs) : 'Sem Informação') + '```', inline: false },
-                    { name: '**Moves**', value: '```' + (dataMovesets[0].moves && Object.keys(dataMovesets[0].moves).length > 0 ? formatJsonToText(dataMovesets[0].moves) : 'Sem Informação') + '```', inline: false },
-                    { name: '**GigantaMax**', value: '```' + (dataMovesets[0].gigantaMax ? '✅' : '❌') + '```', inline: false },
-                    { name: '**TeraType**', value: '```' + (dataMovesets[0].teraType ? dataMovesets[0].teraType : 'Sem Informação') + '```', inline: false }
+                    { name: '**Nome do Moveset**', value: '```' + (dataMovesets[i].name ? dataMovesets[i].name : 'Sem Informação') + '```' },
+                    { name: '**Species**', value: '```' + (dataMovesets[i].species ? dataMovesets[i].species : 'Sem Informação') + '```', inline: true },
+                    { name: '**Level**', value: '```' + (dataMovesets[i].level ? dataMovesets[i].level : 'Sem Informação') + '```', inline: true },
+                    { name: '**Item**', value: '```' + (dataMovesets[i].item ? dataMovesets[i].item : 'Sem Informação') + '```', inline: false },
+                    { name: '**Ability**', value: '```' + (dataMovesets[i].ability ? dataMovesets[i].ability : 'Sem Informação') + '```', inline: true },
+                    { name: '**Natures**', value: '```' + (dataMovesets[i].nature ? dataMovesets[i].nature : 'Sem Informação') + '```', inline: true },
+                    { name: '**Ivs**', value: '```' + (dataMovesets[i].ivs && Object.keys(dataMovesets[i].ivs).length > i ? formatJsonToText(dataMovesets[i].ivs) : 'Sem Informação') + '```', inline: false },
+                    { name: '**Evs**', value: '```' + (dataMovesets[i].evs && Object.keys(dataMovesets[i].evs).length > i ? formatJsonToText(dataMovesets[i].evs) : 'Sem Informação') + '```', inline: false },
+                    { name: '**Moves**', value: '```' + (dataMovesets[i].moves && Object.keys(dataMovesets[i].moves).length > i ? formatJsonToText(dataMovesets[i].moves) : 'Sem Informação') + '```', inline: false },
+                    { name: '**GigantaMax**', value: '```' + (dataMovesets[i].gigantaMax ? '✅' : '❌') + '```', inline: false },
+                    { name: '**TeraType**', value: '```' + (dataMovesets[i].teraType ? dataMovesets[i].teraType : 'Sem Informação') + '```', inline: false }
                 )
                 .setTimestamp()
-            return await interaction.reply({ embeds: [pokemonEmbedToCollect] });
+                .setFooter({ text: `Page ${i} of ${dataMovesets.length.toString()}` });
+
+                embeds.push(pokemonEmbed);
+            }
+
+            await pagination({
+                interaction: interaction,
+                embeds: embeds,
+                author: interaction.member.user,
+                time: 60000,
+                fastSkip: true,
+                disableButtons: true,
+                customFilter: (newestInteraction) => {
+                    return newestInteraction.user.id === interaction.user.id;
+                },
+                buttons: [
+                    {
+                        type: ButtonTypes.first,
+                        label: 'Primeira Página',
+                        style: ButtonStyles.Primary,
+                        emoji: '⏮'
+                    },
+                    {
+                        type: ButtonTypes.previous,
+                        label: 'Página Anterior',
+                        style: ButtonStyles.Success,
+                        emoji: '◀️'
+                    },
+                    {
+                        type: ButtonTypes.number,
+                        label: null,
+                        style: ButtonStyles.Success,
+                        emoji: '#️⃣'
+                    },
+                    {
+                        type: ButtonTypes.next,
+                        label: 'Próxima Página',
+                        style: ButtonStyles.Success,
+                        emoji: '▶️'
+                    },
+                    {
+                        type: ButtonTypes.last,
+                        label: 'Última Página',
+                        style: ButtonStyles.Primary,
+                        emoji: '⏭️'
+                    }
+                ]
+            });
+
 
         }
         catch (err) {
@@ -92,24 +138,6 @@ function formatJsonToText(input) {
 
     return text;
 }
-
-// async function checkPokemonExistsInGeneration(pokemonName, generationNumber) {
-//     try {
-//         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName.toLowerCase()}`);
-//         const generationData = response.data.generation;
-//         const generationUrl = generationData.url;
-//         const generationNumberRegex = /\/(\d+)\/$/;
-//         const match = generationUrl.match(generationNumberRegex);
-//         if (match && parseInt(match[1]) === generationNumber) {
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     } catch (error) {
-//         console.log('Ocorreu um erro:', error.message);
-//         return false;
-//     }
-// }
 
 async function fetchPokemonInfo(pokemonName) {
     try {

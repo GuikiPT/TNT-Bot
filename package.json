@@ -13,6 +13,7 @@
     "docker-deploy-slash": "npm install && npm run deploy-slash"
   },
   "dependencies": {
+    "@devraelfreeze/discordjs-pagination": "^2.7.6",
     "@pkmn/data": "^0.7.45",
     "@pkmn/dex": "^0.7.45",
     "@pkmn/smogon": "^0.3.2",
