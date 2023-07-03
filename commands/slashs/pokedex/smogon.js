@@ -42,13 +42,17 @@ module.exports = {
                 return interaction.reply({ content: 'O Pokémon especificado não existe.', ephemeral: true });
             }
 
-            const pokemonExistsGeneration = await checkPokemonExistsInGeneration(pokemonNameInput, generationInput);
-            if (!pokemonExistsGeneration) {
-                return interaction.reply({ content: 'Esse Pokémon não existe nessa geração `' + generationInput + '`.', ephemeral: true });
-            }
+            // const pokemonExistsGeneration = await checkPokemonExistsInGeneration(pokemonNameInput, generationInput);
+            // if (!pokemonExistsGeneration) {
+            //     return interaction.reply({ content: 'Esse Pokémon não existe nessa geração `' + generationInput + '`.', ephemeral: true });
+            // }
 
 
             const dataMovesets = await smogon.sets(gens.get(generationInput), pokemonNameInput.toLowerCase());
+            if(!dataMovesets || dataMovesets.length === 0) {
+                return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
+            }
+
             const speciesResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonNameInput.toLowerCase()}`);
             const pokeColor = await toHex(speciesResponse.data.color.name);
 
@@ -89,23 +93,23 @@ function formatJsonToText(input) {
     return text;
 }
 
-async function checkPokemonExistsInGeneration(pokemonName, generationNumber) {
-    try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName.toLowerCase()}`);
-        const generationData = response.data.generation;
-        const generationUrl = generationData.url;
-        const generationNumberRegex = /\/(\d+)\/$/;
-        const match = generationUrl.match(generationNumberRegex);
-        if (match && parseInt(match[1]) === generationNumber) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        console.log('Ocorreu um erro:', error.message);
-        return false;
-    }
-}
+// async function checkPokemonExistsInGeneration(pokemonName, generationNumber) {
+//     try {
+//         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName.toLowerCase()}`);
+//         const generationData = response.data.generation;
+//         const generationUrl = generationData.url;
+//         const generationNumberRegex = /\/(\d+)\/$/;
+//         const match = generationUrl.match(generationNumberRegex);
+//         if (match && parseInt(match[1]) === generationNumber) {
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     } catch (error) {
+//         console.log('Ocorreu um erro:', error.message);
+//         return false;
+//     }
+// }
 
 async function fetchPokemonInfo(pokemonName) {
     try {
