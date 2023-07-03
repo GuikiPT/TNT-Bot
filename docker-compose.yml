@@ -1,6 +1,7 @@
 version: '3.1'
 services:
-  tnt-rewrite:
+  tnt-bot:
+    container_name: TNT-Bot
     image: "node:18"
     working_dir: /workspace/node/tnt-rewrite
     restart: always
