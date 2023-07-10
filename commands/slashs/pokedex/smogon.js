@@ -47,8 +47,9 @@ module.exports = {
                 return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
             }
 
-            const speciesResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonNameInput.toLowerCase()}`);
-            const pokeColor = await toHex(speciesResponse.data.color.name);
+            const speciesResponse = await axios.get(pokemonData.speciesUrl);
+
+            const pokeColor = await toHex(speciesResponse.data.color.name || '#FFFFFF');
 
             const embeds = [];
 
@@ -154,13 +155,15 @@ async function fetchPokemonInfo(pokemonName) {
         const abilities = pokemon.abilities.map(ability => ability.ability.name).join(', ');
         const types = pokemon.types.map(type => type.type.name).join(', ');
         const spriteUrl = pokemon.sprites.front_default;
+        const speciesUrl = pokemon.species.url;
 
         return {
             name,
             id,
             abilities,
             types,
-            spriteUrl
+            spriteUrl,
+            speciesUrl,
         };
     } catch (error) {
         if (error.response && error.response.status === 404) {
