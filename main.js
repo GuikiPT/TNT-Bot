@@ -49,5 +49,5 @@ module.exports = async function (spinnies) {
         }
     } catch (err) {
         console.error(colors.red(err.stack || err));
-    }
+    } 
 };
