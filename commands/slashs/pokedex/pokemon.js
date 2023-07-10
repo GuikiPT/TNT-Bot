@@ -1,7 +1,4 @@
 const Discord = require('discord.js');
-const colors = require('colors/safe');
-const Pokedex = require('pokedex-promise-v2');
-var toHex = require('colornames')
 
 module.exports = {
     data: new Discord.SlashCommandBuilder()

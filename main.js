@@ -35,26 +35,19 @@ module.exports = async function (spinnies) {
     });
     client.slashsCmds = new Discord.Collection();
 
-    (async function () {
-        try {
-            const DiscordToken = process.env.DiscordToken;
-
-            if (!DiscordToken) {
-                await spinnies.fail('startingBot', { text: colors.red('Discord Token is not defined or passed correctly! Please check your .env file and try again.\n') });
-                process.exit(1);
+    try {
+        const DiscordToken = process.env.DiscordToken;
+        if (!DiscordToken) {
+            await spinnies.fail('startingBot', { text: colors.red('Discord Token is not defined or passed correctly! Please check your .env file and try again.\n') });
+            process.exit(1);
+        } else {
+            const handlers = ['events', 'slashs'];
+            for (const handler of handlers) {
+                await require(`./handlers/${handler}`)(client, spinnies);
             }
-            else {
-                const handlers = ['events', 'slashs'];
-
-                for (const handler of handlers) {
-                    await require(`./handlers/${handler}`)(client, spinnies);
-                }
-
-                await client.login(DiscordToken);
-            }
+            await client.login(DiscordToken);
         }
-        catch (err) {
-            console.error(colors.red(err.stack || err));
-        }
-    })();
+    } catch (err) {
+        console.error(colors.red(err.stack || err));
+    }
 };

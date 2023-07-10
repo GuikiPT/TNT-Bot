@@ -54,8 +54,6 @@ module.exports = {
             const embeds = [];
 
             for (let i = 0; i < dataMovesets.length; i++) {
-                const moveset = dataMovesets[i];
-
                 const pokemonEmbed = new Discord.EmbedBuilder()
                     .setColor(pokeColor ?? 'White')
                     .setTitle(dataMovesets[i].species + ' #' + pokemonData.id)

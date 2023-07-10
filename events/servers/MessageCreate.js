@@ -8,22 +8,22 @@ module.exports = {
         try {
             if (message.author.bot) return;
             //TODO: check later
-            if (message.channel.type == 1) return message.reply('Não irei responder a mensagens no privado. Por favor execute comandos em um servidor.')
+            if (message.channel.type === 1) return message.reply('Não irei responder a mensagens no privado. Por favor execute comandos em um servidor.')
 
-            
+
             const CounterChannelId = process.env.CounterChannelId;
             const CounterAlternativeChannelId = process.env.CounterAlternativeChannelId;
             const CounterLogChannelId = process.env.CounterLogChannelId;
             const CounterGuildId = process.env.CounterGuildId;
-            
+
             const counterGuild = await message.client.guilds.cache.get(CounterGuildId);
-            
+
             if (CounterGuildId) {
                 if (!counterGuild) {
                     return console.warn(colors.yellow('CounterGuildId is not find in client. Ignoring counter for this case.'));
                 }
                 else {
-                    if(message?.guild?.id != CounterGuildId) return;
+                    if (message?.guild?.id !== CounterGuildId) return;
 
                     if (CounterChannelId) {
                         // check if channel exists
@@ -32,7 +32,7 @@ module.exports = {
                             return console.warn(colors.yellow('CounterChannelId is not find in guild. Ignoring counter channel for this case.'));
                         }
 
-                        else if (message.channel.id == CounterChannelId) {
+                        else if (message.channel.id === CounterChannelId) {
                             const member = await message.guild.members.cache.get(message.author.id);
 
                             var messageContent;
@@ -114,16 +114,16 @@ module.exports = {
                             }
                             else {
                                 message.channel.messages.fetch({ limit: 2 }).then(async messages => {
-                                    var nextToLastMessageContent;
+                                    let nextToLastMessageContent;
 
                                     if (!messages.last().content.length <= 512) {
                                         nextToLastMessageContent = messages.last().content;
                                     }
                                     else {
-                                        nextToLastMessage = messages.last().content.substring(0, 512) + '...';
+                                        nextToLastMessageContent = messages.last().content.substring(0, 512) + '...';
                                     }
 
-                                    if (Number(messages.last().content) + 1 == Number(messages.first().content)) return;
+                                    if (Number(messages.last().content) + 1 === Number(messages.first().content)) { }
                                     else {
                                         if (member.permissions.has(Discord.PermissionsBitField.Flags.Administrator)) {
                                             // TODO: Try to delete admin author message and warn it. If the bot can't delete the message, warn adm author to delete they mistake.
