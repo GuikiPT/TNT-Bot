@@ -1,5 +1,5 @@
 version: "1.0"
 linter: jetbrains/qodana-js:2023.1-eap
 exclude:
-  # TODO: remove and check fot this errors:
   - name: JSCheckFunctionSignatures
+bootstrap: npm install
