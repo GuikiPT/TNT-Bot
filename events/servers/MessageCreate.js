@@ -7,6 +7,9 @@ module.exports = {
     async execute(message) {
         try {
             if (message.author.bot) return;
+            //TODO: check later
+            if (message.channel.type == 1) return message.reply('Não irei responder a mensagens no privado. Por favor execute comandos em um servidor.')
+
             
             const CounterChannelId = process.env.CounterChannelId;
             const CounterAlternativeChannelId = process.env.CounterAlternativeChannelId;
@@ -20,7 +23,7 @@ module.exports = {
                     return console.warn(colors.yellow('CounterGuildId is not find in client. Ignoring counter for this case.'));
                 }
                 else {
-                    if(message.guild.id != CounterGuildId) return;
+                    if(message?.guild?.id != CounterGuildId) return;
 
                     if (CounterChannelId) {
                         // check if channel exists
