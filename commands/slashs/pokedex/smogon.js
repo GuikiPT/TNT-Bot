@@ -10,6 +10,8 @@ const { Smogon } = require('@pkmn/smogon');
 const gens = new Generations(Dex);
 const smogon = new Smogon(fetch);
 
+const { fetchPokemon, formatJsonToText } = require('../../../functions/functions');
+
 module.exports = {
     data: new Discord.SlashCommandBuilder()
         .setName('smogon')
@@ -37,7 +39,7 @@ module.exports = {
                 return interaction.reply('A geração especificada não é suportada. Por favor, forneça uma geração entre 1 e 9.');
             }
 
-            const pokemonData = await fetchPokemonInfo(pokemonNameInput);
+            const pokemonData = await fetchPokemon(pokemonNameInput);
             if (!pokemonData) {
                 return interaction.reply({ content: 'O Pokémon especificado não existe.', ephemeral: true });
             }
@@ -128,47 +130,3 @@ module.exports = {
         }
     },
 };
-
-function formatJsonToText(input) {
-    let text = '';
-
-    for (const key in input) {
-        let formattedKey = key;
-        if (!isNaN(key)) {
-            formattedKey = (+key + 1).toString();
-        }
-        text += `${formattedKey.toUpperCase()} - ${input[key]}\n`;
-    }
-
-    return text;
-}
-
-async function fetchPokemonInfo(pokemonName) {
-    try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
-
-        const pokemon = response.data;
-        const name = pokemon.name;
-        const id = pokemon.id;
-        const abilities = pokemon.abilities.map(ability => ability.ability.name).join(', ');
-        const types = pokemon.types.map(type => type.type.name).join(', ');
-        const spriteUrl = pokemon.sprites.front_default;
-        const speciesUrl = pokemon.species.url;
-
-        return {
-            name,
-            id,
-            abilities,
-            types,
-            spriteUrl,
-            speciesUrl,
-        };
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            console.log(`${pokemonName} não existe.`);
-            return false;
-        }
-        console.log('Error occurred:', error.message);
-        throw error;
-    }
-}
