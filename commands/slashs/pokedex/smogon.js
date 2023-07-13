@@ -49,6 +49,7 @@ module.exports = {
                 return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
             }
 
+            // TODO: review this part of code, maybe they can't get speciesURL information and crash
             const speciesResponse = await axios.get(pokemonData.speciesUrl);
 
             const pokeColor = await toHex(speciesResponse.data.color.name || '#FFFFFF');
