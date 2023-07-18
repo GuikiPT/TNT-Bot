@@ -10,7 +10,7 @@ const { Smogon } = require('@pkmn/smogon');
 const gens = new Generations(Dex);
 const smogon = new Smogon(fetch);
 
-const { fetchPokemon, formatJsonToText } = require('../../../functions/functions');
+const { fetchPokemon, formatJsonToText, fetchPokemonBySpeciesUrl } = require('../../../functions/functions');
 
 module.exports = {
     data: new Discord.SlashCommandBuilder()
@@ -49,9 +49,9 @@ module.exports = {
                 return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
             }
 
-            const speciesResponse = await axios.get(pokemonData.species.url);
+            const speciesResponse = await fetchPokemonBySpeciesUrl(pokemonData.species.url);
 
-            const pokeColor = await toHex(speciesResponse.data.color.name || '#FFFFFF');
+            const pokeColor = await toHex(speciesResponse.color || '#FFFFFF');
 
             const embeds = [];
 

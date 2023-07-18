@@ -51,6 +51,28 @@ module.exports = {
         }
     },
 
+    fetchPokemonBySpeciesUrl: async function (pokemonSpeciesUrl) {
+        try {
+            return await axios.get(pokemonSpeciesUrl)
+                .then(response => {
+                    const pokemonSpecie = response.data;
+
+                    const color = pokemonSpecie.color.name;
+
+                    return {
+                        color
+                    }
+                })
+                .catch(error => {
+                    return null;
+                });
+        }
+        catch (error) {
+            console.error(error);
+            return null;
+        }
+    },
+
     formatJsonToText: async function (input) {
         // TODO: return when no input is provided
         try {
@@ -63,8 +85,8 @@ module.exports = {
                 }
                 text += `${formattedKey.toUpperCase()} - ${input[key]}\n`;
             }
-    
-            return text;    
+
+            return text;
         }
         catch (error) {
             console.error(error);
