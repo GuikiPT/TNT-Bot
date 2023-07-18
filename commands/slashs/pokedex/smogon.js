@@ -49,8 +49,7 @@ module.exports = {
                 return interaction.reply({ content: 'Não existe informação relativa a esse pokémon na geração `' + generationInput + '`', ephemeral: true });
             }
 
-            // TODO: review this part of code, maybe they can't get speciesURL information and crash
-            const speciesResponse = await axios.get(pokemonData.speciesUrl);
+            const speciesResponse = await axios.get(pokemonData.species.url);
 
             const pokeColor = await toHex(speciesResponse.data.color.name || '#FFFFFF');
 
@@ -60,7 +59,7 @@ module.exports = {
                 const pokemonEmbed = new Discord.EmbedBuilder()
                     .setColor(pokeColor ?? 'White')
                     .setTitle(dataMovesets[i].species + ' #' + pokemonData.id)
-                    .setThumbnail(pokemonData.spriteUrl)
+                    .setThumbnail(pokemonData.sprites.front_default)
                     .addFields(
                         { name: '**Nome do Moveset**', value: '```' + (dataMovesets[i].name ? dataMovesets[i].name : 'Sem Informação') + '```' },
                         { name: '**Species**', value: '```' + (dataMovesets[i].species ? dataMovesets[i].species : 'Sem Informação') + '```', inline: true },
@@ -68,9 +67,9 @@ module.exports = {
                         { name: '**Item**', value: '```' + (dataMovesets[i].item ? dataMovesets[i].item : 'Sem Informação') + '```', inline: false },
                         { name: '**Ability**', value: '```' + (dataMovesets[i].ability ? dataMovesets[i].ability : 'Sem Informação') + '```', inline: true },
                         { name: '**Natures**', value: '```' + (dataMovesets[i].nature ? dataMovesets[i].nature : 'Sem Informação') + '```', inline: true },
-                        { name: '**Ivs**', value: '```' + (dataMovesets[i].ivs && Object.keys(dataMovesets[i].ivs).length > i ? formatJsonToText(dataMovesets[i].ivs) : 'Sem Informação') + '```', inline: false },
-                        { name: '**Evs**', value: '```' + (dataMovesets[i].evs && Object.keys(dataMovesets[i].evs).length > i ? formatJsonToText(dataMovesets[i].evs) : 'Sem Informação') + '```', inline: false },
-                        { name: '**Moves**', value: '```' + (dataMovesets[i].moves && Object.keys(dataMovesets[i].moves).length > i ? formatJsonToText(dataMovesets[i].moves) : 'Sem Informação') + '```', inline: false },
+                        { name: '**Ivs**', value: '```' + (dataMovesets[i].ivs && Object.keys(dataMovesets[i].ivs).length > i ? await formatJsonToText(dataMovesets[i].ivs) : 'Sem Informação') + '```', inline: false },
+                        { name: '**Evs**', value: '```' + (dataMovesets[i].evs && Object.keys(dataMovesets[i].evs).length > i ? await formatJsonToText(dataMovesets[i].evs) : 'Sem Informação') + '```', inline: false },
+                        { name: '**Moves**', value: '```' + (dataMovesets[i].moves && Object.keys(dataMovesets[i].moves).length > i ? await formatJsonToText(dataMovesets[i].moves) : 'Sem Informação') + '```', inline: false },
                         { name: '**GigantaMax**', value: '```' + (dataMovesets[i].gigantaMax ? '✅' : '❌') + '```', inline: false },
                         { name: '**TeraType**', value: '```' + (dataMovesets[i].teraType ? dataMovesets[i].teraType : 'Sem Informação') + '```', inline: false }
                     )
