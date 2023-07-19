@@ -15,7 +15,7 @@ module.exports = {
                     // const forms = pokemon.forms.map(form => form.forms.map(form => form.form.name)).join(', ');
                     const height = pokemon.height;
                     const id = pokemon.id;
-                    const inicial = pokemon.is_default;
+                    // const inicial = pokemon.is_default;
                     const moves = pokemon.moves;
                     const name = pokemon.name;
                     const species = pokemon.species;
@@ -31,7 +31,7 @@ module.exports = {
                         forms,
                         height,
                         id,
-                        inicial,
+                        // inicial,
                         moves,
                         name,
                         species,
@@ -90,6 +90,44 @@ module.exports = {
         }
         catch (error) {
             console.error(error);
+        }
+    },
+
+    translatedPokemonTypes: async function (type) {
+        try {
+            if (!type) {
+                return null;
+            }
+
+            const translatedTypes = {
+                normal: 'Normal',
+                fire: 'Fogo',
+                water: 'Água',
+                electric: 'Elétrico',
+                grass: 'Grama',
+                ice: 'Gelo',
+                fighting: 'Lutador',
+                poison: 'Veneno',
+                ground: 'Terra',
+                flying: 'Voador',
+                psychic: 'Psíquico',
+                bug: 'Inseto',
+                rock: 'Pedra',
+                ghost: 'Fantasma',
+                dragon: 'Dragão',
+                dark: 'Dark',
+                steel: 'Metal',
+                fairy: 'Fada'
+            };
+
+            return new Promise((resolve, reject) => {
+                const translated = type.map(type => translatedTypes[type] || type);
+                resolve(translated);
+            });
+
+        }
+        catch (error) {
+            console.error(error.stack || error);
         }
     }
 

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const colors = require('colors/safe');
 const axios = require('axios');
-var toHex = require('colornames')
+var toHex = require('colornames');
 const { pagination, ButtonTypes, ButtonStyles } = require('@devraelfreeze/discordjs-pagination');
 
 const { Dex } = require('@pkmn/dex');
