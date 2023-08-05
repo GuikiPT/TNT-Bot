@@ -9,7 +9,12 @@ module.exports = {
             if (message.author.bot) return;
             //TODO: check later
             if (message.channel.type === 1) return message.reply('Não irei responder a mensagens no privado. Por favor execute comandos em um servidor.')
-
+	    if (message.content.startsWith("# ")){
+		try {
+	 		return await message.delete();
+		}
+		catch () {}
+	    }
 
             const CounterChannelId = process.env.CounterChannelId;
             const CounterAlternativeChannelId = process.env.CounterAlternativeChannelId;
