@@ -13,7 +13,7 @@ module.exports = {
 		try {
 	 		return await message.delete();
 		}
-		catch () {}
+		catch {}
 	    }
 
             const CounterChannelId = process.env.CounterChannelId;
