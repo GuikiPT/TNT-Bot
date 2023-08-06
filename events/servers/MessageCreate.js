@@ -14,15 +14,27 @@ module.exports = {
             if (message.content.startsWith("# ")) {
                 try {
                     const member = await message.guild.members.fetch(message.author.id);
-                    if (!member.permissions.has(Discord.PermissionFlagsBits.Administrator)) return await message.delete();
+                    if (!member.permissions.has(Discord.PermissionFlagsBits.Administrator)){
+                        try {
+                            await message.author.send({ content: 'Não permitimos envio de mensagens com \`# <mensagem>\` devido a spamms.', ephemeral: true });
+                        } catch (error) {
+                            if (error.code === 50007) {
+                                return;
+                            } else {
+                                console.error(colors.red('Error:', error));
+                            }
+                        }
+                        return await message.delete();
+                    } 
                 } catch (error) {
                     if (error.code === 10008) {
-                        return
+                        return;
                     } else {
                         console.error(colors.red('Error:', error));
                     }
                 }
             }
+            
             
 
             const CounterChannelId = process.env.CounterChannelId;
