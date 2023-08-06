@@ -4,7 +4,7 @@ module.exports = {
     fetchPokemon: async function (pokemonName) {
         try {
             // TODO: return when no pokemonName is provided
-            return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`)
+            return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase().replaceAll(' ', '-')}`)
                 .then(response => {
                     const pokemon = response.data;
 
