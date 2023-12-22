@@ -62,7 +62,7 @@ module.exports = {
           { name: "Doubles UnderUsed (Doubles UU)", value: "doubles-uu" },
           { name: "Monotype", value: "monotype" },
           { name: "OuverUsed (OU)", value: "ou" },
-          { name: "Uber", value: "uber" },
+          { name: "Ubers", value: "ubers" },
           { name: "UnderUsed (UU)", value: "uu" }
         )
     ),
