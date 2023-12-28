@@ -57,18 +57,57 @@ module.exports = {
           { name: "2v2 Doubles", value: "2v2-doubles" },
           { name: "Almost Any Ability", value: "almost-any-ability" },
           { name: "Anything Goes (AG)", value: "ag" },
-          { name: "Doubles OU", value: "doubles" },
+          { name: "Balanced Hackmons (BH)", value: "bh" },
+          { name: "Doubles", value: "doubles" },
           { name: "Doubles Ubers", value: "doubles-ubers" },
-          { name: "Doubles UnderUsed (Doubles UU)", value: "doubles-uu" },
+          { name: "Doubles UU", value: "doubles-uu" },
+          { name: "Inverse Battle", value: "inverse-battle" },
+          { name: "Mix and Mega", value: "mix-and-mega" },
           { name: "Monotype", value: "monotype" },
-          { name: "OuverUsed (OU)", value: "ou" },
-          { name: "Ubers", value: "ubers" },
-          { name: "UnderUsed (UU)", value: "uu" }
+          { name: "NeverUsed (NU)", value: "nu" },
+          { name: "OverUsed (OU)", value: "ou" },
+          { name: "PU", value: "pu" },
+          { name: "RU", value: "ru" },
+          { name: "Seasonal", value: "seasonal" },
+          { name: "Tier Shift", value: "tier-shift" },
+          { name: "Uber", value: "uber" },
+          { name: "UnderUsed (UU)", value: "uu" },
+          { name: "Untiered", value: "untiered" },
+          { name: "ZeroUsed (ZU)", value: "zu" },
         )
     ),
 
   async execute(interaction) {
     try {
+      function getMovesetFormatNameByValue(value) {
+        const movesetFormats = [
+          { name: "1v1", value: "1v1" },
+          { name: "2v2 Doubles", value: "2v2-doubles" },
+          { name: "Almost Any Ability", value: "almost-any-ability" },
+          { name: "Anything Goes (AG)", value: "ag" },
+          { name: "Balanced Hackmons (BH)", value: "bh" },
+          { name: "Doubles", value: "doubles" },
+          { name: "Doubles Ubers", value: "doubles-ubers" },
+          { name: "Doubles UU", value: "doubles-uu" },
+          { name: "Inverse Battle", value: "inverse-battle" },
+          { name: "Mix and Mega", value: "mix-and-mega" },
+          { name: "Monotype", value: "monotype" },
+          { name: "NeverUsed (NU)", value: "nu" },
+          { name: "OverUsed (OU)", value: "ou" },
+          { name: "PU", value: "pu" },
+          { name: "RU", value: "ru" },
+          { name: "Seasonal", value: "seasonal" },
+          { name: "Tier Shift", value: "tier-shift" },
+          { name: "Uber", value: "uber" },
+          { name: "UnderUsed (UU)", value: "uu" },
+          { name: "Untiered", value: "untiered" },
+          { name: "ZeroUsed (ZU)", value: "zu" },
+        ];
+
+        const moveset = movesetFormats.find(format => format.value === value);
+        return moveset ? moveset.name : null;
+      }
+
       const generationInput = interaction.options.getInteger("generation");
       const pokemonNameInput = interaction.options.getString("pokemon");
       const movesetFormat = interaction.options.getString("format");
@@ -133,6 +172,16 @@ module.exports = {
                 "```",
             },
             {
+              name: "**Geração do Moveset**",
+              value: "```" + generationInput + "° Gen```",
+              inline: true
+            },
+            {
+              name: "**Formato do Moveset**",
+              value: "```" + getMovesetFormatNameByValue(movesetFormat) + "```",
+              inline: true
+            },
+            {
               name: "**Species**",
               value:
                 "```" +
@@ -140,7 +189,6 @@ module.exports = {
                   ? dataMovesets[i].species
                   : "Sem Informação") +
                 "```",
-              inline: true,
             },
             {
               name: "**Level**",
@@ -187,7 +235,7 @@ module.exports = {
               value:
                 "```" +
                 (dataMovesets[i].ivs &&
-                Object.keys(dataMovesets[i].ivs).length > i
+                  Object.keys(dataMovesets[i].ivs).length > i
                   ? await formatJsonToText(dataMovesets[i].ivs)
                   : "Sem Informação") +
                 "```",
@@ -198,7 +246,7 @@ module.exports = {
               value:
                 "```" +
                 (dataMovesets[i].evs &&
-                Object.keys(dataMovesets[i].evs).length > i
+                  Object.keys(dataMovesets[i].evs).length > i
                   ? await formatJsonToText(dataMovesets[i].evs)
                   : "Sem Informação") +
                 "```",
@@ -209,32 +257,38 @@ module.exports = {
               value:
                 "```" +
                 (dataMovesets[i].moves &&
-                Object.keys(dataMovesets[i].moves).length > i
+                  Object.keys(dataMovesets[i].moves).length > i
                   ? await formatJsonToText(dataMovesets[i].moves)
                   : "Sem Informação") +
                 "```",
               inline: false,
             },
-            {
-              name: "**GigantaMax**",
-              value: "```" + (dataMovesets[i].gigantaMax ? "✅" : "❌") + "```",
-              inline: false,
-            },
-            {
-              name: "**TeraType**",
-              value:
-                "```" +
-                (dataMovesets[i].teraType
-                  ? dataMovesets[i].teraType
-                  : "Sem Informação") +
-                "```",
-              inline: false,
-            }
           )
           .setTimestamp()
           .setFooter({
             text: `Page ${i} of ${dataMovesets.length.toString()}`,
           });
+
+        if (generationInput >= 8) {
+          pokemonEmbed.addFields({
+            name: "**GigantaMax**",
+            value: "```" + (dataMovesets[i].gigantaMax ? "✅" : "❌") + "```",
+            inline: false,
+          });
+        }
+
+        if (generationInput >= 9) {
+          pokemonEmbed.addFields({
+            name: "**TeraType**",
+            value:
+              "```" +
+              (dataMovesets[i].teraType
+                ? dataMovesets[i].teraType
+                : "Sem Informação") +
+              "```",
+            inline: false,
+          })
+        }
 
         embeds.push(pokemonEmbed);
       }
