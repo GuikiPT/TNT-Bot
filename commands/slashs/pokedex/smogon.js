@@ -20,6 +20,12 @@ const {
   fetchPokemonBySpeciesUrl,
 } = require("../../../functions/functions");
 
+const pokemonIndex = require('./pokemon.json');
+function cleanPokemonName(name) {
+  const replaceChar = name.replace(/-/g, ' ');
+  return replaceChar.charAt(0).toUpperCase() + replaceChar.slice(1);
+}
+
 module.exports = {
   data: new Discord.SlashCommandBuilder()
     .setName("smogon")
@@ -29,6 +35,7 @@ module.exports = {
         .setName("pokemon")
         .setDescription("O nome do Pokémon")
         .setRequired(true)
+        .setAutocomplete(true)
     )
     .addIntegerOption((option) =>
       option
@@ -76,6 +83,28 @@ module.exports = {
           { name: "ZeroUsed (ZU)", value: "zu" },
         )
     ),
+
+  async autocomplete(interaction) {
+    const focusedValue = interaction.options.getFocused();
+
+    if (focusedValue.length >= 3) {
+      const filteredPokemon = pokemonIndex.data.filter(pokemon =>
+        pokemon.name.startsWith(focusedValue)
+      );
+
+      const limitedChoices = filteredPokemon.slice(0, 25).map(pokemon => ({
+        name: cleanPokemonName(pokemon.name),
+        value: pokemon.name,
+      }));
+      
+      await interaction.respond(limitedChoices);
+
+    }
+    else {
+      return null
+    }
+
+  },
 
   async execute(interaction) {
     try {
