@@ -6,7 +6,6 @@ module.exports = {
     once: false,
     async execute(interaction) {
         if (interaction.isChatInputCommand()) {
-            console.log("chat")
             const command = await interaction.client.slashsCmds.get(interaction.commandName);
 
             if (!command) return;
@@ -23,8 +22,6 @@ module.exports = {
             }
         }
         else if (interaction.isAutocomplete()) {
-            console.log("complete")
-
             const command = interaction.client.slashsCmds.get(interaction.commandName);
     
             if (!command) return;
