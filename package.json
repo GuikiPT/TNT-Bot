@@ -17,7 +17,7 @@
     "@pkmn/data": "^0.7.59",
     "@pkmn/dex": "^0.7.59",
     "@pkmn/smogon": "^0.3.6",
-    "axios": "^1.4.0",
+    "axios": "^1.6.5",
     "cli-spinners": "^2.9.0",
     "colornames": "^1.1.1",
     "colors": "^1.4.0",
