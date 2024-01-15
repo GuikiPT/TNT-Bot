@@ -16,7 +16,7 @@
     "@devraelfreeze/discordjs-pagination": "^2.7.6",
     "@pkmn/data": "^0.7.59",
     "@pkmn/dex": "^0.7.59",
-    "@pkmn/smogon": "^0.3.6",
+    "@pkmn/smogon": "^0.5.3",
     "axios": "^1.4.0",
     "cli-spinners": "^2.9.0",
     "colornames": "^1.1.1",
