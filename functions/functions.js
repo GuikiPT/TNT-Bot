@@ -129,6 +129,9 @@ module.exports = {
         catch (error) {
             console.error(error.stack || error);
         }
+    },
+    firstLetterToUppercase: async function (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
 }

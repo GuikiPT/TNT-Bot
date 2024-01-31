@@ -40,7 +40,7 @@ for (const folder of commandFolders) {
         console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
         const data = await rest.put(
-            Discord.Routes.applicationGuildCommands(clientId, guildId),
+            Discord.Routes.applicationCommands(clientId),
             { body: commands },
         );
 

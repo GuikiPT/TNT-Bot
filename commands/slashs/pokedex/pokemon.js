@@ -14,6 +14,8 @@ module.exports = {
         ),
     async execute(interaction) {
         try {
+            return interaction.reply({ content: 'This function isn\'t working properly and get desactivated!'});
+
             const pokemonNameInput = await interaction.options.getString('pokemon');
 
             const pokemonData = await fetchPokemon(pokemonNameInput);

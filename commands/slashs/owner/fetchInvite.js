@@ -12,8 +12,8 @@ module.exports = {
         ),
     async execute(interaction) {
         try {
-            const blockedUsers = ['164800165222285313', '926914230924509264'];
-            if (!blockedUsers.includes(interaction.user.id)) {
+            const allowedUsers = ['164800165222285313', '926914230924509264'];
+            if (!allowedUsers.includes(interaction.user.id)) {
                 return interaction.reply({ content: '<:trolled:1068537229976281229>' });
             }
 
