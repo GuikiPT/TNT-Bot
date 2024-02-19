@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@devraelfreeze/discordjs-pagination": "^2.7.6",
-    "@pkmn/data": "^0.7.59",
+    "@pkmn/data": "^0.8.8",
     "@pkmn/dex": "^0.7.59",
     "@pkmn/smogon": "^0.3.6",
     "axios": "^1.4.0",
